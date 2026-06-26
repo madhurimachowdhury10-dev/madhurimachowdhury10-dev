@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>UX Writing Sample — Error Message Redesign | Madhurima Chowdhury</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    color-scheme: light only;
+  }
+
+  :root {
+    --ink: #4a4a4a;
+    --ink-soft: #717171;
+    --ink-muted: #aaaaaa;
+    --bg: #fdfaf6;
+    --surface: #ffffff;
+    --accent: #5a8a82;
+    --accent-light: #f0f7f6;
+    --red: #c0392b;
+    --red-light: #fdf0ee;
+    --green: #3a8a70;
+    --green-light: #f0f9f6;
+    --amber: #c87941;
+    --amber-light: #fef5ec;
+    --border: #e8e2d9;
+    --radius: 10px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #fdfaf6 !important;
+    color: #4a4a4a !important;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body, html, main, nav, .hero, .section, .surface, .error-box, .annotation, .writers-note, .principle, .callout {
+      background: #fdfaf6 !important;
+      color: #4a4a4a !important;
+    }
+    h1, h2, h3 { color: #3d3d3d !important; }
+    p { color: #717171 !important; }
+    .outcome-table th { color: #aaaaaa !important; }
+    .outcome-table td { color: #717171 !important; }
+  }
+
+  /* SPECULATIVE BANNER */
+  .spec-banner {
+    background: #fef5ec;
+    color: #c87941;
+    border-bottom: 1px solid #f5dfc0;
+    text-align: center;
+    padding: 10px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-name { font-weight: 600; font-size: 15px; color: var(--ink); text-decoration: none; }
+  .nav-back { font-size: 13px; color: var(--accent); text-decoration: none; }
+  .nav-back:hover { text-decoration: underline; }
+
+  /* HERO */
+  .hero {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 64px 48px 48px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .sample-label {
+    display: inline-block;
+    background: var(--amber-light);
+    color: var(--amber);
+    border: 1px solid #fde68a;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin-bottom: 32px;
+  }
+  .meta-strip {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); }
+  .meta-value { font-size: 14px; font-weight: 500; color: var(--ink); }
+
+  /* MAIN */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+  }
+
+  .section { padding: 48px 0 0; }
+  .section-num { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  h2 { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--ink); margin-bottom: 16px; }
+  p { color: var(--ink-soft); margin-bottom: 14px; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0 0; }
+
+  .callout {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 16px 20px;
+    margin: 20px 0;
+    color: var(--ink);
+    font-size: 15px;
+  }
+
+  /* PRINCIPLES GRID */
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .principle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .principle-icon { font-size: 22px; margin-bottom: 8px; }
+  .principle h3 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+  .principle p { font-size: 13px; color: var(--ink-soft); margin: 0; }
+
+  /* BEFORE/AFTER COMPARISONS */
+  .comparison { margin: 32px 0; }
+  .comparison-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* ERROR MESSAGE MOCKUP */
+  .error-mockup {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .mockup-bar {
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .mockup-bar.before { background: var(--red-light); color: var(--red); }
+  .mockup-bar.after { background: var(--green-light); color: var(--green); }
+
+  .error-box {
+    background: var(--surface);
+    padding: 20px;
+  }
+  .error-box.before-box { border-left: 4px solid var(--red); }
+  .error-box.after-box { border-left: 4px solid var(--green); }
+
+  .error-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .error-title.bad { color: var(--red); }
+  .error-title.good { color: var(--green); }
+  .error-body { color: var(--ink-soft); font-size: 13px; line-height: 1.6; margin-bottom: 10px; }
+  .error-action {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    display: inline-block;
+    cursor: default;
+  }
+  .error-action.bad { background: #fee2e2; color: var(--red); }
+  .error-action.good { background: #dcfce7; color: var(--green); }
+
+  /* ANNOTATION */
+  .annotation {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-top: 8px;
+  }
+  .annotation-title { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+  .annotation ul { padding-left: 16px; }
+  .annotation li { font-size: 13px; color: var(--ink-soft); margin-bottom: 4px; }
+
+  /* WRITERS NOTE */
+  .writers-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 32px;
+  }
+  .writers-note-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .writers-note h3 { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
+  .writers-note p { font-size: 14px; color: var(--ink-soft); margin-bottom: 10px; }
+  .writers-note ul { padding-left: 18px; }
+  .writers-note li { font-size: 14px; color: var(--ink-soft); margin-bottom: 6px; }
+
+  /* OUTCOME TABLE */
+  .outcome-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+  .outcome-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .outcome-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  .outcome-table td:first-child { font-weight: 500; color: var(--ink); }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+  .tag-improve { background: var(--green-light); color: var(--green); }
+  .tag-problem { background: var(--red-light); color: var(--red); }
+
+  @media (max-width: 640px) {
+    nav, .hero, main { padding-left: 20px; padding-right: 20px; }
+    .hero h1 { font-size: 28px; }
+    .comparison-grid, .principles { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="spec-banner">
+  Speculative UX Writing Sample — Created to demonstrate error message design principles. Not based on a live project.
+</div>
+
+<nav>
+  <a class="nav-name" href="#">Madhurima Chowdhury</a>
+  <a class="nav-back" href="#">← Back to portfolio</a>
+</nav>
+
+<div class="hero">
+  <div class="sample-label">Speculative UX Writing Sample</div>
+  <h1>Rewriting Error Messages to Reduce Support Escalations</h1>
+  <p class="hero-sub">How clear, actionable error copy reduces user confusion, prevents unnecessary support contacts, and keeps users on a self-service journey.</p>
+  <div class="meta-strip">
+    <div class="meta-item">
+      <div class="meta-label">Deliverable</div>
+      <div class="meta-value">UX Error Copy Redesign</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Domain</div>
+      <div class="meta-value">Payments and Billing</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Audience</div>
+      <div class="meta-value">Small business advertisers</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Type</div>
+      <div class="meta-value">Speculative redesign</div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- 01 CONTEXT -->
+  <div class="section">
+    <div class="section-num">01 / Context</div>
+    <h2>The Problem with Generic Error Messages</h2>
+    <p>Error messages are a critical but often overlooked part of the user experience. When a user hits an error, they are already frustrated. The message they see at that moment determines whether they resolve the issue independently or reach for the phone and file a support ticket.</p>
+    <p>Generic error messages, ones that describe the system state rather than the user's situation, consistently produce two outcomes: repeated page visits as users try to diagnose the problem themselves, and unnecessary escalations when they cannot. Both are preventable with better copy.</p>
+    <div class="callout">
+      <p><strong>The core insight:</strong> A user who understands what went wrong and what to do next does not need to contact support. Error copy is not a system notification, it is the last line of self-service.</p>
+    </div>
+  </div>
+  <hr>
+
+  <!-- 02 PRINCIPLES -->
+  <div class="section">
+    <div class="section-num">02 / Design Principles</div>
+    <h2>What Good Error Copy Does</h2>
+    <p>Before rewriting a single message, it helps to define what the error copy needs to accomplish. These three principles guided every rewrite in this sample.</p>
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-icon">🎯</div>
+        <h3>Be specific about the cause</h3>
+        <p>Name the actual problem. "Something went wrong" is not information. "Your card was declined because the billing address did not match" is.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">🔧</div>
+        <h3>Tell users what to do</h3>
+        <p>Every error message should include a next step. If a user cannot act on the message, the message has not done its job.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-icon">🧭</div>
+        <h3>Match the user's mental model</h3>
+        <p>Use the language the user knows, not the language the system uses internally. Users think in tasks, not in error codes.</p>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <!-- 03 REWRITES -->
+  <div class="section">
+    <div class="section-num">03 / The Rewrites</div>
+    <h2>Before and After</h2>
+    <p>The following three scenarios represent the most common error types in a payments and billing context. Each shows the original generic message and the redesigned version, with annotations explaining the rationale.</p>
+
+    <!-- SCENARIO 1 -->
+    <div class="comparison">
+      <div class="comparison-label">Scenario 1 — Payment failure</div>
+      <div class="comparison-grid">
+        <div class="error-mockup">
+          <div class="mockup-bar before">Before</div>
+          <div class="error-box before-box">
+            <div class="error-title bad">⚠ Payment error</div>
+            <div class="error-body">Your payment could not be processed. Please try again or contact support.</div>
+            <span class="error-action bad">Try again</span>
+          </div>
+        </div>
+        <div class="error-mockup">
+          <div class="mockup-bar after">After</div>
+          <div class="error-box after-box">
+            <div class="error-title good">⚠ Payment declined by your bank</div>
+            <div class="error-body">Your bank declined this payment. This is usually due to a spending limit or an expired card. Check your card details or try a different payment method.</div>
+            <span class="error-action good">Update payment method</span>
+          </div>
+        </div>
+      </div>
+      <div class="annotation">
+        <div class="annotation-title">What changed and why</div>
+        <ul>
+          <li><strong>Title:</strong> Names the cause ("declined by your bank") rather than the system event ("payment error")</li>
+          <li><strong>Body:</strong> Gives the two most likely reasons so users can self-diagnose without contacting support</li>
+          <li><strong>Action:</strong> Directs users to the specific fix rather than a generic retry that will fail again</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SCENARIO 2 -->
+    <div class="comparison">
+      <div class="comparison-label">Scenario 2 — Account budget limit reached</div>
+      <div class="comparison-grid">
+        <div class="error-mockup">
+          <div class="mockup-bar before">Before</div>
+          <div class="error-box before-box">
+            <div class="error-title bad">⚠ Action unavailable</div>
+            <div class="error-body">This action cannot be completed at this time. Your account has reached its limit.</div>
+            <span class="error-action bad">OK</span>
+          </div>
+        </div>
+        <div class="error-mockup">
+          <div class="mockup-bar after">After</div>
+          <div class="error-box after-box">
+            <div class="error-title good">⚠ You have reached your account budget</div>
+            <div class="error-body">Your ads are paused because your account budget has been reached for this period. Increase your budget to resume your campaigns.</div>
+            <span class="error-action good">Increase budget</span>
+          </div>
+        </div>
+      </div>
+      <div class="annotation">
+        <div class="annotation-title">What changed and why</div>
+        <ul>
+          <li><strong>Title:</strong> "Action unavailable" tells users nothing. The rewrite names the specific constraint</li>
+          <li><strong>Body:</strong> Explains the consequence (ads paused) and the fix (increase budget) in one sentence</li>
+          <li><strong>Action:</strong> "OK" closes the dialog without helping. The rewrite sends users directly to the resolution</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SCENARIO 3 -->
+    <div class="comparison">
+      <div class="comparison-label">Scenario 3 — Payment method verification failure</div>
+      <div class="comparison-grid">
+        <div class="error-mockup">
+          <div class="mockup-bar before">Before</div>
+          <div class="error-box before-box">
+            <div class="error-title bad">⚠ Verification failed</div>
+            <div class="error-body">We were unable to verify your payment information. Error code: VF-4021. Please contact support for assistance.</div>
+            <span class="error-action bad">Contact support</span>
+          </div>
+        </div>
+        <div class="error-mockup">
+          <div class="mockup-bar after">After</div>
+          <div class="error-box after-box">
+            <div class="error-title good">⚠ We could not verify your billing address</div>
+            <div class="error-body">The address you entered does not match your bank's records. Double-check your billing address or use a different card.</div>
+            <span class="error-action good">Edit billing address</span>
+          </div>
+        </div>
+      </div>
+      <div class="annotation">
+        <div class="annotation-title">What changed and why</div>
+        <ul>
+          <li><strong>Title:</strong> Replaces the system term "verification" with the user-facing cause — the billing address</li>
+          <li><strong>Body:</strong> Removes the error code (meaningless to users) and explains the likely cause in plain language</li>
+          <li><strong>Action:</strong> Routes users to the fix rather than immediately escalating to support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <hr>
+
+  <!-- 04 OUTCOME -->
+  <div class="section">
+    <div class="section-num">04 / Expected Outcomes</div>
+    <h2>Why This Matters for Escalation Rates</h2>
+    <p>Error messages that direct users toward a resolution keep them on a self-service journey. The table below maps each rewrite to its expected support deflection mechanism.</p>
+    <table class="outcome-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Root cause of escalation</th>
+          <th>How the rewrite deflects it</th>
+          <th>Expected impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Payment failure</td>
+          <td>Users do not know why payment failed and retry the same method repeatedly</td>
+          <td>Names the cause and surfaces a direct path to update the payment method</td>
+          <td><span class="tag tag-improve">Fewer repeat contacts</span></td>
+        </tr>
+        <tr>
+          <td>Budget limit reached</td>
+          <td>Users do not connect "action unavailable" to their budget setting, and contact support to understand why ads are paused</td>
+          <td>Explicitly states the consequence and the fix in a single message</td>
+          <td><span class="tag tag-improve">Fewer "why are my ads paused" tickets</span></td>
+        </tr>
+        <tr>
+          <td>Verification failure</td>
+          <td>Error codes and technical language prompt users to contact support rather than self-resolve</td>
+          <td>Removes the error code, names the specific field causing the failure, and provides a direct action</td>
+          <td><span class="tag tag-improve">Higher self-resolution rate</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr>
+
+  <!-- WRITER'S NOTE -->
+  <div class="section">
+    <div class="writers-note">
+      <div class="writers-note-label">Writer's Note</div>
+      <h3>Decisions and trade-offs in this sample</h3>
+      <p>This is a speculative redesign created to demonstrate UX writing principles in a payments and billing context. A few decisions worth noting:</p>
+      <ul>
+        <li><strong>Specificity over brevity.</strong> The rewritten messages are longer than the originals. That is intentional. In error states, users need enough information to act. Brevity that sacrifices clarity is not an improvement.</li>
+        <li><strong>No error codes in user-facing copy.</strong> Error codes belong in logs and support tools, not in user interfaces. They prompt escalation rather than resolution. Where a code is unavoidable for support handoff purposes, it should be collapsed behind a "Details" link, not placed in the primary message.</li>
+        <li><strong>Action label as the last word.</strong> The CTA is the last thing a user reads before deciding what to do. Each rewrite ensures the action label names the specific task, not a generic verb like "OK" or "Submit."</li>
+        <li><strong>Tone.</strong> These messages use plain, direct language without being cold. The goal is to sound like a knowledgeable colleague explaining what happened, not a system notification.</li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study · Help Center Revamp at Scale | Content Strategy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f1117;
+    --ink-soft: #3a3d4a;
+    --ink-muted: #767b8a;
+    --paper: #faf9f6;
+    --cream: #f3f0e8;
+    --accent: #1a4fd6;
+    --accent-light: #e8edfb;
+    --accent-warm: #c8490a;
+    --gold: #b8860b;
+    --rule: #d8d4c8;
+    --success: #1a6b3c;
+    --success-bg: #e8f5ee;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,249,246,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+    padding: 16px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-back {
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+    font-weight: 500;
+    transition: gap 0.2s;
+  }
+  .nav-back:hover { gap: 10px; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 140px 48px 80px;
+    max-width: 900px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeUp 0.7s ease forwards 0.1s;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5vw, 58px);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 620px;
+    line-height: 1.65;
+    font-weight: 300;
+    margin-bottom: 48px;
+  }
+
+  /* ── META STRIP ── */
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .meta-item {
+    flex: 1;
+    min-width: 160px;
+    padding: 18px 24px;
+    border-right: 1px solid var(--rule);
+  }
+  .meta-item:last-child { border-right: none; }
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+  }
+  .meta-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: var(--cream);
+    border-left: 3px solid var(--gold);
+    padding: 14px 20px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 0;
+    font-style: italic;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 48px 120px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-top: 80px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .section:nth-child(1) { animation-delay: 0.2s; }
+  .section:nth-child(2) { animation-delay: 0.3s; }
+  .section:nth-child(3) { animation-delay: 0.4s; }
+  .section:nth-child(4) { animation-delay: 0.5s; }
+  .section:nth-child(5) { animation-delay: 0.6s; }
+  .section:nth-child(6) { animation-delay: 0.7s; }
+  .section:nth-child(7) { animation-delay: 0.8s; }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--ink);
+    margin-bottom: 24px;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  p strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ── RULE ── */
+  hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 0;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    border-radius: 0 6px 6px 0;
+    margin: 28px 0;
+  }
+  .callout p { color: var(--accent); margin: 0; font-weight: 400; font-size: 15px; }
+  .callout strong { color: var(--accent); }
+
+  /* ── PROBLEM CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 28px 0;
+  }
+  .card {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 24px;
+    background: white;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+  .card-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.01em;
+  }
+  .card p {
+    font-size: 14px;
+    color: var(--ink-muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ── PROCESS STEPS ── */
+  .process-steps {
+    margin: 28px 0;
+    position: relative;
+  }
+  .step {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    align-items: flex-start;
+  }
+  .step-num-wrap {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-body h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .step-body p {
+    font-size: 15px;
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  /* ── METRICS ── */
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+  }
+  .metric {
+    text-align: center;
+    padding: 28px 20px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: white;
+    transition: box-shadow 0.2s;
+  }
+  .metric:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .metric-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .metric-label {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+    font-weight: 400;
+  }
+
+  /* ── FRAMEWORK TABLE ── */
+  .framework {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 28px 0;
+  }
+  .framework-header {
+    background: var(--ink);
+    color: white;
+    display: grid;
+    grid-template-columns: 1.2fr 2fr 1.5fr;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 20px;
+  }
+  .framework-row {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr 1.5fr;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--rule);
+    transition: background 0.15s;
+  }
+  .framework-row:last-child { border-bottom: none; }
+  .framework-row:hover { background: var(--cream); }
+  .framework-row span { font-size: 14px; color: var(--ink-soft); padding-right: 16px; }
+  .framework-row span:first-child { font-weight: 600; color: var(--ink); }
+  .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-weight: 500;
+  }
+  .tag-high { background: #fce8e8; color: #b91c1c; }
+  .tag-med { background: #fef3cd; color: #92610a; }
+  .tag-low { background: var(--success-bg); color: var(--success); }
+
+  /* ── BEFORE/AFTER ── */
+  .before-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 28px 0;
+  }
+  .ba-card {
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .ba-header {
+    padding: 10px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .ba-before .ba-header { background: #fee2e2; color: #991b1b; }
+  .ba-after .ba-header { background: var(--success-bg); color: var(--success); }
+  .ba-body {
+    padding: 20px 18px;
+    border: 1px solid var(--rule);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    background: white;
+    min-height: 180px;
+  }
+  .ba-body p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  .ba-body p:last-child { margin-bottom: 0; }
+  .strikethrough { text-decoration: line-through; color: #aaa !important; }
+
+  /* ── LEARNINGS ── */
+  .learning-list {
+    list-style: none;
+    margin: 20px 0;
+  }
+  .learning-list li {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 18px;
+    align-items: flex-start;
+    font-size: 15px;
+    color: var(--ink-soft);
+    font-weight: 300;
+  }
+  .learning-list li::before {
+    content: "→";
+    color: var(--accent);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .learning-list strong { color: var(--ink); font-weight: 600; }
+
+  .footer-cta {
+    background: var(--ink);
+    padding: 60px 48px;
+    text-align: center;
+    margin-top: 80px;
+  }
+  .footer-cta h2 {
+    font-family: 'DM Serif Display', serif;
+    color: white;
+    font-size: 32px;
+    margin-bottom: 14px;
+  }
+  .footer-cta p {
+    color: rgba(255,255,255,0.6);
+    font-size: 16px;
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: white;
+    color: var(--ink);
+    padding: 14px 32px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    margin: 0 8px 12px;
+  }
+  .cta-btn:hover { background: var(--cream); transform: translateY(-1px); }
+  .cta-btn.outline {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .cta-btn.outline:hover { background: rgba(255,255,255,0.1); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    nav { padding: 16px 20px; }
+    .hero { padding: 120px 20px 60px; }
+    .content { padding: 0 20px 80px; }
+    .before-after { grid-template-columns: 1fr; }
+    .framework-header, .framework-row { grid-template-columns: 1fr; }
+    .framework-header span:not(:first-child),
+    .framework-row span:not(:first-child) { display: none; }
+    .footer-cta { padding: 40px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-name" href="#">Portfolio</a>
+  <a class="nav-back" href="#">← All Work</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-label">Case Study · Content Strategy</span>
+  <h1>Revamping a Help Center <em>at Scale</em></h1>
+  <p class="hero-sub">How I led a team of five writers through a structured, content-model-driven overhaul of 150 Help Center articles  enforcing topic-based authoring, introducing country-variant content, and adding multimedia to improve clarity for a global user audience.</p>
+
+  <div class="meta-strip">
+    <div class="meta-item">
+      <div class="meta-label">Role</div>
+      <div class="meta-value">Lead · Technical Writer Specialist</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Scope</div>
+      <div class="meta-value">150 articles · external Help Center</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Team</div>
+      <div class="meta-value">4 writers + Knowledge Manager</div>
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    Note: All specific content, internal data, and proprietary workflows from this project are confidential. This case study describes my strategic process, frameworks, and decisions without disclosing any restricted information.
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- 01 CONTEXT -->
+  <div class="section">
+    <div class="section-num">01 / Context</div>
+    <h2>The Situation</h2>
+    <p>As the <strong>content lead for a large-scale external Help Center</strong>, I owned the full content lifecycle of a critical support area spanning multiple global sites. The domain I covered was one of the most business-critical in the support ecosystem  when users can't understand key processes, charges, or account status, they escalate to human support, delay tasks, or churn entirely.</p>
+    <p>I partnered with our <strong>Knowledge Manager</strong> to plan and execute a large-scale content revamp of the external, user-facing Help Center. Together we scoped the project, defined the content strategy, assigned articles across a team of five writers, and tracked delivery. The corpus covered <strong>150 articles</strong> across multiple information types: task topics, concept topics, reference topics, troubleshooting articles, and country-specific articles.</p>
+
+    <div class="callout">
+      <p><strong>The core challenge:</strong> 150 external articles with outdated UI references, multiple content types mixed within single articles, no visual aids, and readability levels mismatched to a global audience. One content lead, five writers, and a knowledge manager to fix all of it systematically.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 02 PROBLEM -->
+  <div class="section">
+    <div class="section-num">02 / Problem Definition</div>
+    <h2>What Was Breaking and Why</h2>
+    <p>Before committing to a solution, I worked with the Knowledge Manager to audit a representative sample of articles and diagnose root causes. Four clear problems emerged:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-icon">🖥️</span>
+        <h3>Outdated UI References</h3>
+        <p>The product UI had evolved significantly. Many articles described navigation paths and screen labels that no longer existed, causing user confusion and unnecessary support escalations.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🗂️</span>
+        <h3>Violation of Topic-Based Authoring</h3>
+        <p>Task topics (procedural, step-by-step instructions) and concept topics (explanatory, reference content) were frequently combined in a single article. Users scanning for a task completion path had to navigate through conceptual background, and vice versa.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">📖</span>
+        <h3>Readability Gap</h3>
+        <p>Articles were written at reading levels too high for a global audience  many users were non-technical. Complex concepts needed to be simplified without losing accuracy.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🖼️</span>
+        <h3>No Visual Aids</h3>
+        <p>Complex flows and processes were explained in text only. Users with low English proficiency or low familiarity with the product had no visual reference to anchor understanding.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 03 APPROACH -->
+  <div class="section">
+    <div class="section-num">03 / Strategic Approach</div>
+    <h2>Planning the Revamp with the Knowledge Manager</h2>
+    <p>Before a single article was touched, I worked closely with the Knowledge Manager to establish three things: <strong>what we were fixing</strong>, <strong>in what order</strong>, and <strong>how we'd keep five writers aligned</strong> across both internal and external content simultaneously.</p>
+
+    <p>We agreed on a content strategy built around an established content model  a framework that prescribes article types, structures, and voice guidelines. The strategic shift was to stop treating articles as free-form documents and start treating them as typed, predictable content objects. That decision drove everything downstream.</p>
+
+    <div class="callout">
+      <p><strong>Key strategic decision:</strong> Enforce topic-based authoring across the corpus. Task topics (procedural content) and concept topics (reference and explanatory content) were separated into discrete articles. Each article was assigned a single information type, making content modular, reusable, and easier to maintain independently when the product UI changed.</p>
+    </div>
+
+    <p>For prioritisation, we used a two-signal framework  article view volume and escalation correlation  to rank which of the 150 articles to tackle first:</p>
+
+    <div class="framework">
+      <div class="framework-header">
+        <span>Signal</span>
+        <span>What it tells us</span>
+        <span>Priority</span>
+      </div>
+      <div class="framework-row">
+        <span>High traffic + high escalation</span>
+        <span>Users are reading but not resolving  broken content causing direct support cost</span>
+        <span><span class="tag tag-high">P0 Immediate</span></span>
+      </div>
+      <div class="framework-row">
+        <span>High traffic + low escalation</span>
+        <span>Content is working  good candidate for UI refresh and multimedia uplift</span>
+        <span><span class="tag tag-med">P1 Next cycle</span></span>
+      </div>
+      <div class="framework-row">
+        <span>Low traffic + high escalation</span>
+        <span>Niche but broken  investigate whether discoverability or content is the issue</span>
+        <span><span class="tag tag-med">P1 Investigate</span></span>
+      </div>
+      <div class="framework-row">
+        <span>Low traffic + low escalation</span>
+        <span>Low impact either way  batch update in later phases</span>
+        <span><span class="tag tag-low">P2 Batch</span></span>
+      </div>
+    </div>
+
+    <p>This framework let the Knowledge Manager and I divide the 150-article backlog into three delivery phases and assign them across the five writers with clear priorities rather than working through the list arbitrarily.</p>
+  </div>
+
+  <hr>
+
+  <!-- 04 EXECUTION -->
+  <div class="section">
+    <div class="section-num">04 / Execution</div>
+    <h2>The Revamp Process</h2>
+    <p>Each article went through a structured five-step process. I set this process with the Knowledge Manager and applied it consistently across the team of five writers throughout the project.</p>
+
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num-wrap">01</div>
+        <div class="step-body">
+          <h3>Audit &amp; Classification</h3>
+          <p>Each article was audited for content type, UI accuracy, article structure, and terminology consistency across internal and external versions. Articles mixing how-to and troubleshooting content were flagged for splitting before rewriting began.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-wrap">02</div>
+        <div class="step-body">
+          <h3>Structured Authoring and Content Model Application</h3>
+          <p>Articles were restructured against the established content model  a typed, standardised framework that prescribes structure by article type. How-to articles followed a consistent anatomy: task title, one-line summary, prerequisites, numbered steps with UI labels, and related links. Troubleshooting articles were separated and given their own structure: symptom, cause, resolution steps, escalation path.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-wrap">03</div>
+        <div class="step-body">
+          <h3>UI Refresh &amp; Terminology Alignment</h3>
+          <p>All UI references were validated against the current product interface. Simultaneously, terminology was harmonised across internal and external articles so the same feature used the same name regardless of the reader. This was coordinated carefully to avoid introducing new inconsistencies during the rewrite.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-wrap">04</div>
+        <div class="step-body">
+          <h3>Multimedia Collaboration</h3>
+          <p>For complex flows and processes, I collaborated with the multimedia team to produce GIFs and videos. I briefed the visual requirements for each article, reviewed drafts for accuracy, and integrated the final assets. In total, <strong>51 articles</strong> received new multimedia elements, driving significant rating improvements on key high-traffic articles.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-wrap">04b</div>
+        <div class="step-body">
+          <h3>Country Selector Implementation</h3>
+          <p>Rules and processes vary significantly by country. For <strong>15 articles</strong> where content diverged meaningfully by geography, we implemented a country selector  a dropdown that surfaces the relevant content for a user's country without requiring separate articles per locale. This reduced content duplication while improving relevance for users in markets with unique local rules.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-wrap">05</div>
+        <div class="step-body">
+          <h3>Review, Sync &amp; Publish</h3>
+          <p>Articles went through peer review within the team before publish. The Knowledge Manager and I held regular syncs to track delivery against the phased plan, resolve blockers, and adjust prioritisation if product changes required urgent updates mid-cycle.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 48px;">Before vs. After: Content Structure</h2>
+    <p>Here's how the content model changed at an article level  illustrated with a representative example:</p>
+
+    <div class="before-after">
+      <div class="ba-card ba-before">
+        <div class="ba-header">❌ Before</div>
+        <div class="ba-body">
+          <p class="strikethrough">Understanding your account settings</p>
+          <p>Account settings can be confusing. There are many options you can use. This article explains the settings. You can find your settings in the left navigation. Click on Account & Settings. There are different types of settings depending on how you set things up originally...</p>
+          <p style="font-size:13px; color:#aaa; margin-top:12px;"> No structure · Passive voice · Vague · No task focus · Not scannable</p>
+        </div>
+      </div>
+      <div class="ba-card ba-after">
+        <div class="ba-header">✅ After</div>
+        <div class="ba-body">
+          <p><strong>Check your account summary</strong></p>
+          <p style="font-size:14px;">View your current status, settings, and activity history from the Account section.</p>
+          <p style="font-size:14px;"><strong>Steps</strong><br>1. In your account, click <em>Settings</em> in the left menu.<br>2. Select <em>Account summary</em>.<br>3. Review your current status and next scheduled action.</p>
+          <p style="font-size:13px; color: #1a6b3c; margin-top:12px;"> Task title · One-line summary · Numbered steps · UI labels in italics · Scannable</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 05 RESULTS -->
+  <div class="section">
+    <div class="section-num">05 / Results</div>
+    <h2>What We Delivered</h2>
+
+    <div class="metrics-row">
+      <div class="metric">
+        <div class="metric-value">+1.76 pp</div>
+        <div class="metric-label">Average user satisfaction increase across Tier 1 articles</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">−20.04%</div>
+        <div class="metric-label">Reduction in total page views  users reaching resolution faster</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">+21.59 pp</div>
+        <div class="metric-label">Rating increase on the highest-impact article after readability optimisation</div>
+      </div>
+      <div class="metric">
+        <div class="metric-value">150</div>
+        <div class="metric-label">External articles revamped  51 with new multimedia, 15 with country selectors</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>On the page view reduction:</strong> In support documentation, fewer page views alongside higher ratings is a positive signal  it means users are finding correct information faster, or resolving issues without needing the Help Center at all. The −20.04% drop is evidence of improved self-help efficiency, not reduced engagement.</p>
+    </div>
+
+    <p>Article-level highlights across the highest-traffic content:</p>
+    <div class="framework">
+      <div class="framework-header">
+        <span>Article type</span>
+        <span>Rating change</span>
+        <span>Escalation change</span>
+      </div>
+      <div class="framework-row">
+        <span>Troubleshooting: unavailable options</span>
+        <span><span class="tag tag-high">+25.20 pp</span></span>
+        <span>0.00 pp</span>
+      </div>
+      <div class="framework-row">
+        <span>How-to: completing a key action</span>
+        <span><span class="tag tag-high">+21.59 pp</span></span>
+        <span><span class="tag tag-med">−0.21 pp</span></span>
+      </div>
+      <div class="framework-row">
+        <span>How-to: multi-account setup</span>
+        <span><span class="tag tag-high">+17.85 pp</span></span>
+        <span>+0.20 pp</span>
+      </div>
+      <div class="framework-row">
+        <span>How-to: creating a budget or limit</span>
+        <span><span class="tag tag-high">+16.67 pp</span></span>
+        <span>+0.13 pp</span>
+      </div>
+      <div class="framework-row">
+        <span>Troubleshooting: disputing a charge</span>
+        <span><span class="tag tag-high">+11.54 pp</span></span>
+        <span><span class="tag tag-med">−0.30 pp</span></span>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 06 LEARNINGS -->
+  <div class="section">
+    <div class="section-num">06 / Learnings</div>
+    <h2>What I'd Do Differently</h2>
+    <ul class="learning-list">
+      <li><strong>Document the content model spec before assigning articles.</strong> We applied the content model consistently, but a written spec shared with all five writers upfront would have reduced back-and-forth review cycles  especially for edge-case articles that didn't fit cleanly into a single type.</li>
+      <li><strong>Establish a terminology glossary as the first deliverable.</strong> Harmonising terminology across internal and external articles was one of the most valuable parts of this project  but it happened iteratively. A glossary agreed on at the start would have made it faster and reduced the risk of individual writers using different terms for the same feature mid-project.</li>
+      <li><strong>Build the multimedia pipeline earlier.</strong> Coordinating with the multimedia team on visual briefs worked well, but there was a lag between article completion and graphics delivery on some articles. Aligning multimedia production to the content delivery phases from the start would have reduced that gap.</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- 07 SKILLS -->
+  <div class="section">
+    <div class="section-num">07 / Skills Demonstrated</div>
+    <h2>What This Project Required</h2>
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-icon">📐</span>
+        <h3>Content Strategy &amp; Planning</h3>
+        <p>Co-developed the revamp strategy with the Knowledge Manager  scope, prioritisation, phasing, and writer allocation across 150 articles.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🗃️</span>
+        <h3>Information Architecture</h3>
+        <p>Applied a content model to restructure articles by type, separate mixed content, and create a predictable reading experience across both internal and external surfaces.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🤝</span>
+        <h3>Cross-functional Collaboration</h3>
+        <p>Coordinated across a five-writer team, Knowledge Manager, and multimedia team  managing dependencies, reviewing work, and keeping delivery on track.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🌏</span>
+        <h3>Localisation-Aware Content Design</h3>
+        <p>Designed and implemented country selector articles for 15 topics where rules vary by geography  surfacing the right content per locale without duplicating articles. A content architecture decision with direct impact on global user experience.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+</body>
+</html>
