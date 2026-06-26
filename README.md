@@ -8,8 +8,9 @@
 
 <div align="center">
 
-[![Portfolio](https://img.shields.io/badge/🌐%20Portfolio-Visit%20Now-4f7b6e?style=for-the-badge)]([https://madhurimachowdhury10-dev.github.io/technical-writing-portfolio/])
+[![Portfolio](https://img.shields.io/badge/🌐%20Portfolio-Visit%20Now-4f7b6e?style=for-the-badge)](https://madhurimachowdhury10-dev.github.io/technical-writing-portfolio/)
 &nbsp;
+
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0a66c2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/madhurima-chowdhury-199960116/)
 &nbsp;
 [![Email](https://img.shields.io/badge/Gmail-Say%20Hello-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:madhurimachowdhury10@gmail.com)
